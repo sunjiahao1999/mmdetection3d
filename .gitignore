@@ -125,6 +125,7 @@ mmdet3d/.mim
 # demo
 *.jpg
 *.png
+*.json
 data/s3dis/Stanford3dDataset_v1.2_Aligned_Version/
 data/scannet/scans/
 data/sunrgbd/OFFICIAL_SUNRGBD/
@@ -134,3 +135,4 @@ data/sunrgbd/OFFICIAL_SUNRGBD/
 # Waymo evaluation
 mmdet3d/evaluation/functional/waymo_utils/compute_detection_metrics_main
 mmdet3d/evaluation/functional/waymo_utils/compute_detection_let_metrics_main
+mmdet3d/evaluation/functional/waymo_utils/compute_segmentation_metrics_main
