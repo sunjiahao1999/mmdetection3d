@@ -9,6 +9,7 @@ from mmdet3d.utils import ConfigType, OptConfigType
 from .torchsparse import IS_TORCHSPARSE_AVAILABLE
 
 if IS_TORCHSPARSE_AVAILABLE:
+    import torchsparse
     import torchsparse.nn as spnn
     from torchsparse.tensor import SparseTensor
 else:
@@ -47,17 +48,23 @@ class TorchSparseConvModule(BaseModule):
                  init_cfg: OptConfigType = None,
                  **kwargs) -> None:
         super().__init__(init_cfg)
-        layers = [
-            spnn.Conv3d(
-                in_channels=in_channels,
-                out_channels=out_channels,
-                kernel_size=kernel_size,
-                stride=stride,
-                padding=padding,
-                dilation=dilation,
-                bias=bias,
-                transposed=transposed)
-        ]
+        if torchsparse.__version__ < '2.0':
+            layers = [
+                spnn.Conv3d(in_channels, out_channels, kernel_size, stride,
+                            dilation, bias, transposed)
+            ]
+        else:
+            layers = [
+                spnn.Conv3d(
+                    in_channels=in_channels,
+                    out_channels=out_channels,
+                    kernel_size=kernel_size,
+                    stride=stride,
+                    padding=padding,
+                    dilation=dilation,
+                    bias=bias,
+                    transposed=transposed)
+            ]
         if norm_cfg is not None:
             _, norm = build_norm_layer(norm_cfg, out_channels)
             layers.append(norm)
